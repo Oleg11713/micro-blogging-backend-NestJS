@@ -82,6 +82,8 @@ export class UsersRepository extends Repository<User> {
     const query = this.createQueryBuilder('user');
     const admin = await this.findOne({ where: { role: 'ADMIN' } });
     if (!admin) {
+      const salt = await bcrypt.genSalt();
+      ADMIN.password = await bcrypt.hash(ADMIN.password, salt);
       const initialAdmin = this.create(ADMIN);
       await this.save(initialAdmin);
     }
