@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
-import { PublicationsModule } from './publications/publications.module';
-import { CommentsModule } from './comments/comments.module';
-import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import * as path from 'path';
+
+import { PublicationsModule } from './publications/publications.module';
+import { CommentsModule } from './comments/comments.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [

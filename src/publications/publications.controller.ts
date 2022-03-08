@@ -10,11 +10,12 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { FilesInterceptor } from '@nestjs/platform-express';
+
 import { PublicationsService } from './publications.service';
 import { Publication } from './publication.entity';
 import { PublicationDto } from './dto/publication.dto';
-import { AuthGuard } from '@nestjs/passport';
-import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('publications')
 @UseGuards(AuthGuard())

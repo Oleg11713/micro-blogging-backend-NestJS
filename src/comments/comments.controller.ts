@@ -8,10 +8,11 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+
 import { CommentsService } from './comments.service';
 import { Comment } from './comment.entity';
 import { CommentDto } from './dto/comment.dto';
-import { AuthGuard } from '@nestjs/passport';
 
 @Controller('comments')
 @UseGuards(AuthGuard())

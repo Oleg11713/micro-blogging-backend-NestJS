@@ -1,6 +1,4 @@
 import { EntityRepository, Repository } from 'typeorm';
-import { User } from './user.entity';
-import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import {
   ConflictException,
   InternalServerErrorException,
@@ -8,8 +6,11 @@ import {
 import * as uuid from 'uuid';
 import * as bcrypt from 'bcrypt';
 import * as nodemailer from 'nodemailer';
-import { JwtPayload } from './jwt-payload.interface';
 import * as jwtService from 'jsonwebtoken';
+
+import { User } from './user.entity';
+import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import { JwtPayload } from './jwt-payload.interface';
 import { ADMIN } from './admin-credentials';
 
 @EntityRepository(User)
