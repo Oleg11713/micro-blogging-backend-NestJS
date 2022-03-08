@@ -22,7 +22,7 @@ export class PublicationsService {
   ): Promise<Publication> {
     const { title, content, userId } = publicationDto;
     let fileName = '';
-    if (images) {
+    if (images.length !== 0) {
       fileName = await this.fileService.createFile(images);
     }
     const publication = this.publicationsRepository.create({
