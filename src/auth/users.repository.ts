@@ -30,7 +30,7 @@ export class UsersRepository extends Repository<User> {
   }
 
   async sendActivationMail(to: string, link: string) {
-    await this.transporter.sendMail({
+    this.transporter.sendMail({
       from: process.env.SMPT_USER,
       to,
       subject: 'Подтверждение регистрации аккаунта',

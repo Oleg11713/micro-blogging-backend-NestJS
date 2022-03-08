@@ -49,7 +49,6 @@ export class PublicationsController {
     @UploadedFiles() newImages,
   ): Promise<Publication> {
     const { id, title, content } = publicationDto;
-
     return this.publicationsService.updatePublication(
       id,
       title,
