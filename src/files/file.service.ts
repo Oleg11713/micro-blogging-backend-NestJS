@@ -5,11 +5,11 @@ import * as uuid from 'uuid';
 
 @Injectable()
 export class FilesService {
-  async createFile(files): Promise<string> {
+  async createFile(files: object): Promise<string> {
     try {
       const fileNames: string[] = [];
-      if (Array.isArray(files)) {
-        files.map((file) => {
+      Object.values(files).map(
+        (file: { buffer: string | NodeJS.ArrayBufferView }) => {
           const fileName = uuid.v4() + '.jpg';
           const filePath = path.resolve(__dirname, '..', 'static');
           if (!fs.existsSync(filePath)) {
@@ -17,16 +17,9 @@ export class FilesService {
           }
           fs.writeFileSync(path.join(filePath, fileName), file.buffer);
           fileNames.push(fileName);
-        });
-      } else {
-        const fileName = uuid.v4() + '.jpg';
-        const filePath = path.resolve(__dirname, '..', 'static');
-        if (!fs.existsSync(filePath)) {
-          fs.mkdirSync(filePath, { recursive: true });
-        }
-        fs.writeFileSync(path.join(filePath, fileName), files.buffer);
-        fileNames[0] = fileName;
-      }
+        },
+      );
+
       return fileNames.join(',');
     } catch (e) {
       throw new HttpException(

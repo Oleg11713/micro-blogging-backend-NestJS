@@ -19,11 +19,11 @@ export class PublicationsService {
 
   async createPublication(
     publicationDto: PublicationDto,
-    images,
+    images: object,
   ): Promise<Publication> {
     const { title, content, userId } = publicationDto;
     let fileName = '';
-    if (images.length !== 0) {
+    if (Object.keys(images).length !== 0) {
       fileName = await this.fileService.createFile(images);
     }
     const publication = this.publicationsRepository.create({
@@ -50,8 +50,8 @@ export class PublicationsService {
     id: number,
     title: string,
     content: string,
-    images,
-    newImages,
+    images: { images: string },
+    newImages: object,
   ): Promise<Publication> {
     const publication = await this.getPublicationById(id);
     if (!publication) {
