@@ -1,8 +1,8 @@
 import * as uuid from 'uuid';
-import { ADMIN_ROLE, START_ID } from '../utils/constsRoles';
+import { ADMIN_ROLE } from '../utils/constsRoles';
 
 export const ADMIN = {
-  id: START_ID,
+  id: 1,
   displayName: 'Олег Овчинский',
   age: '19',
   email: 'admin@mail.ru',
