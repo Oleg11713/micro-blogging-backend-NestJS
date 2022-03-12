@@ -12,6 +12,7 @@ import { User } from './user.entity';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { JwtPayload } from './jwt-payload.interface';
 import { ADMIN } from './admin-credentials';
+import { ADMIN_ROLE, USER_ROLE } from '../utils/constsRoles';
 
 @EntityRepository(User)
 export class UsersRepository extends Repository<User> {
@@ -49,11 +50,15 @@ export class UsersRepository extends Repository<User> {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
     const activationLink = uuid.v4();
+    const users = await this.find();
     const user = this.create({
+      id: users.length + 1,
       displayName,
       age,
       email,
       password: hashedPassword,
+      role: USER_ROLE,
+      isActivated: false,
       activationLink,
     });
     await this.sendActivationMail(
@@ -80,14 +85,13 @@ export class UsersRepository extends Repository<User> {
   }
 
   async getUsers(): Promise<User[]> {
-    const query = this.createQueryBuilder('user');
-    const admin = await this.findOne({ where: { role: 'ADMIN' } });
+    const admin = await this.findOne({ where: { role: ADMIN_ROLE } });
     if (!admin) {
       const salt = await bcrypt.genSalt();
       ADMIN.password = await bcrypt.hash(ADMIN.password, salt);
       const initialAdmin = this.create(ADMIN);
       await this.save(initialAdmin);
     }
-    return await query.getMany();
+    return await this.find();
   }
 }

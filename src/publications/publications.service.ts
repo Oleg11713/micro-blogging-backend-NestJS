@@ -19,26 +19,32 @@ export class PublicationsService {
 
   async createPublication(
     publicationDto: PublicationDto,
-    images: object,
+    images: {
+      file: { buffer: string | NodeJS.ArrayBufferView };
+    },
   ): Promise<Publication> {
     const { title, content, userId } = publicationDto;
     let fileName = '';
     if (Object.keys(images).length !== 0) {
       fileName = await this.fileService.createFile(images);
     }
+    const userIdInteger = +userId;
+    const publications = await this.publicationsRepository.find();
     const publication = this.publicationsRepository.create({
+      id: publications.length + 1,
       title,
       content,
       images: fileName,
-      userId,
+      userId: userIdInteger,
     });
     await this.publicationsRepository.save(publication);
     return publication;
   }
 
   async getPublicationById(id: number): Promise<Publication> {
+    const idInteger = +id;
     const publication = await this.publicationsRepository.findOne({
-      where: { id },
+      where: { id: idInteger },
     });
     if (!publication) {
       throw new NotFoundException('Такой публикации не существует');
@@ -51,7 +57,9 @@ export class PublicationsService {
     title: string,
     content: string,
     images: { images: string },
-    newImages: object,
+    newImages: {
+      file: { buffer: string | NodeJS.ArrayBufferView };
+    },
   ): Promise<Publication> {
     const publication = await this.getPublicationById(id);
     if (!publication) {

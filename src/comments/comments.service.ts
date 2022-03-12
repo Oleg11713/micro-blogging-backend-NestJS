@@ -21,7 +21,10 @@ export class CommentsService {
   }
 
   async getCommentById(id: number): Promise<Comment> {
-    const comment = await this.commentsRepository.findOne({ where: { id } });
+    const idInteger = +id;
+    const comment = await this.commentsRepository.findOne({
+      where: { id: idInteger },
+    });
     if (!comment) {
       throw new NotFoundException('Такого комментария не существует');
     }

@@ -7,6 +7,9 @@ import * as path from 'path';
 import { PublicationsModule } from './publications/publications.module';
 import { CommentsModule } from './comments/comments.module';
 import { AuthModule } from './auth/auth.module';
+import { Publication } from './publications/publication.entity';
+import { User } from './auth/user.entity';
+import { Comment } from './comments/comment.entity';
 
 @Module({
   imports: [
@@ -24,14 +27,11 @@ import { AuthModule } from './auth/auth.module';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         return {
-          type: 'postgres',
-          autoLoadEntities: true,
+          type: 'mongodb',
+          url: configService.get('DB_URL'),
           synchronize: true,
-          host: configService.get('DB_HOST'),
-          port: configService.get('DB_PORT'),
-          username: configService.get('DB_USERNAME'),
-          password: configService.get('DB_PASSWORD'),
-          database: configService.get('DB_DATABASE'),
+          useUnifiedTopology: true,
+          entities: [User, Publication, Comment],
         };
       },
     }),

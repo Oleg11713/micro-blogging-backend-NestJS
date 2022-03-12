@@ -44,7 +44,10 @@ export class AuthService {
   }
 
   async getUserById(id: string): Promise<User> {
-    const user = await this.usersRepository.findOne({ where: { id } });
+    const idInteger = +id;
+    const user = await this.usersRepository.findOne({
+      where: { id: idInteger },
+    });
     if (!user) {
       throw new NotFoundException('Такого пользователя не существует');
     }

@@ -6,13 +6,20 @@ import { CommentDto } from './dto/comment.dto';
 @EntityRepository(Comment)
 export class CommentsRepository extends Repository<Comment> {
   async getComments(): Promise<Comment[]> {
-    const query = this.createQueryBuilder('comment');
-    return await query.getMany();
+    return await this.find();
   }
 
   async createComment(commentDto: CommentDto): Promise<Comment> {
     const { content, userId, publicationId } = commentDto;
-    const comment = this.create({ content, userId, publicationId });
+    const userIdInteger = +userId;
+    const publicationIdInteger = +publicationId;
+    const comments = await this.find();
+    const comment = this.create({
+      id: comments.length + 1,
+      content,
+      userId: userIdInteger,
+      publicationId: publicationIdInteger,
+    });
     await this.save(comment);
     return comment;
   }

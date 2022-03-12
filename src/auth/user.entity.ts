@@ -1,8 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
+  @ObjectIdColumn()
+  _id: string;
+
+  @PrimaryColumn()
   id: number;
 
   @Column()
@@ -11,16 +14,16 @@ export class User {
   @Column()
   age: string;
 
-  @Column({ unique: true })
+  @Column()
   email: string;
 
   @Column()
   password: string;
 
-  @Column({ default: 'USER' })
+  @Column()
   role: string;
 
-  @Column({ default: false })
+  @Column()
   isActivated: boolean;
 
   @Column()
